@@ -2,80 +2,72 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
+import '../pages/user_page.dart';
 
 class Authentication {
   static User? currentUser;
 
   static getCurrentUser() {
-    return currentUser;
+    return currentUser = FirebaseAuth.instance.currentUser;
   }
 
   static Future<FirebaseApp> initializeFirebase() async {
     FirebaseApp firebaseApp = await Firebase.initializeApp();
-
-    // TODO: Add auto login logic
-
     return firebaseApp;
   }
 
-  static Future<User?> signInWithGoogle({required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-
-    final GoogleSignInAccount? googleSignInAccount =
-        await googleSignIn.signIn();
-
-    if (googleSignInAccount != null) {
-      final GoogleSignInAuthentication googleSignInAuthentication =
-          await googleSignInAccount.authentication;
-
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication.accessToken,
-        idToken: googleSignInAuthentication.idToken,
+  // Sign Up with Email and Password
+  static Future<void> signUp(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
       );
-
-      try {
-        final UserCredential userCredential =
-            await auth.signInWithCredential(credential);
-
-        user = userCredential.user;
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'account-exists-with-different-credential') {
-          Get.snackbar("Oooppss!",
-              'The account already exists with a different credential',
-              colorText: Colors.white, backgroundColor: Colors.red);
-        } else if (e.code == 'invalid-credential') {
-          Get.snackbar("Oooppss!",
-              'Error occurred while accessing credentials. Try again.',
-              colorText: Colors.white, backgroundColor: Colors.red);
-        }
-      } catch (e) {
-        Get.snackbar(
-            "Oooppss!", 'Error occurred using Google Sign-In. Try again.',
-            colorText: Colors.white, backgroundColor: Colors.red);
-      }
+      currentUser = userCredential.user;
+      Get.off(() => UserInfoScreen(user: currentUser!));
+      Get.snackbar('Success', 'Account created successfully!');
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar('Error', e.message!);
     }
-
-    currentUser = user;
-
-    return user;
   }
 
-  static Future<void> signOut({required BuildContext context}) async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
+  // Login with Email and Password
+  static Future<void> login({
+    required String email,
+    required String password,
+    required BuildContext context,
+  }) async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      currentUser = userCredential.user;
+      Get.off(() => UserInfoScreen(user: currentUser!));
 
+      Get.snackbar('Success', 'Logged in successfully!');
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar('Error', e.message!);
+    }
+  }
+
+  // Sign Out
+  static Future<void> signOut({required BuildContext context}) async {
     try {
       await FirebaseAuth.instance.signOut();
+      Get.snackbar('Success', 'Logged out successfully!');
     } catch (e) {
       Get.snackbar(
         'Oooppss!',
         'Error signing out. Try again.',
       );
     }
-
     currentUser = null;
   }
 }

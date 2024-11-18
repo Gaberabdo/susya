@@ -70,8 +70,8 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Future<void> _chooseImageFromGallery() async {
-    PickedFile? image =
-        await ImagePicker().getImage(source: ImageSource.gallery);
+    XFile? image =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (image != null) {
       final String imagePath = image.path;

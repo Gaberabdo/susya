@@ -6,10 +6,10 @@ import 'package:dio/dio.dart';
 Future<dynamic> sendToPredictor(imagePath) async {
   final imageBytes = File(imagePath).readAsBytesSync();
   String imageBase64 = base64Encode(imageBytes);
-
+  print (imageBase64);
   var dio = Dio();
 
-  final response = await dio.post("https://susya.onrender.com/", data: {
+  final response = await dio.post("http://192.168.1.8:8080/", data: {
     'image': imageBase64,
   });
 
@@ -22,9 +22,9 @@ Future<dynamic> sendToPredictor(imagePath) async {
 }
 
 void coordinatePOST(_latitude, _longitude) async {
-  // var dio = Dio();
-  // final response = await dio
-  //     .post("https://plant-disease-detector-pytorch.herokuapp.com/", data: {
-  //   'latitude': _latitude, 'longitude': _longitude
-  // });
+  var dio = Dio();
+  final response = await dio
+      .post("https://plant-disease-detector-pytorch.herokuapp.com/", data: {
+    'latitude': _latitude, 'longitude': _longitude
+  });
 }

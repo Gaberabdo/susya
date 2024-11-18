@@ -8,11 +8,11 @@ import 'package:susya/authentication/auth_class.dart';
 Future<dynamic> sendToPredictor(imagePath) async {
   final imageBytes = File(imagePath).readAsBytesSync();
   String imageBase64 = base64Encode(imageBytes);
-
+  print(imageBase64);
   var dio = Dio();
 
   final response = await dio
-      .post("https://plant-disease-detector-pytorch.herokuapp.com/", data: {
+      .post("https://susya.onrender.com/", data: {
     'image': imageBase64,
   });
 
@@ -29,7 +29,7 @@ sendAlerts({plant, disease, username}) async {
   var dio = Dio();
 
   final response = await dio.post(
-      "https://plant-disease-detector-pytorch.herokuapp.com/notification",
+      "https://susya.onrender.com/notification",
       data: {'plant': plant, 'disease': disease, 'user': user.displayName});
 
   // final String plant = response.data['plant'];

@@ -30,47 +30,49 @@ class _ResultPageState extends State<ResultPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Spacer(
-              flex: 1,
-            ),
-            Container(
-              height: 300,
-              width: 350,
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                  color: Colors.greenAccent.withOpacity(0.3),
-                  borderRadius: BorderRadius.circular(16)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Spacer(
-                    flex: 2,
-                  ),
-                  Text("Plant Name: " + widget.plant,
-                      style: TextStyle(fontSize: 18)),
-                  Spacer(
-                    flex: 1,
-                  ),
-                  widget.disease == "healthy"
-                      ? Text("Your Plant is Healthy!!",
-                          style: TextStyle(fontSize: 18))
-                      : Text("Disease detected: " + widget.disease,
+
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  height: 300,
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: Colors.greenAccent.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Spacer(
+                        flex: 2,
+                      ),
+                      Text("Plant Name: " + widget.plant,
                           style: TextStyle(fontSize: 18)),
-                  Spacer(flex: 1),
-                  widget.disease == "healthy"
-                      ? Container()
-                      : Text("Possible remedy: ",
-                          style: TextStyle(fontSize: 18)),
-                  SizedBox(height: 2),
-                  widget.disease == "healthy"
-                      ? Container()
-                      : Text(widget.remedy,
-                          style: TextStyle(
-                              fontSize: 14, fontStyle: FontStyle.italic)),
-                  Spacer(
-                    flex: 2,
+                      Spacer(
+                        flex: 1,
+                      ),
+                      widget.disease == "healthy"
+                          ? Text("Your Plant is Healthy!!",
+                              style: TextStyle(fontSize: 18))
+                          : Text("Disease detected: " + widget.disease,
+                              style: TextStyle(fontSize: 18)),
+                      Spacer(flex: 1),
+                      widget.disease == "healthy"
+                          ? Container()
+                          : Text("Possible remedy: ",
+                              style: TextStyle(fontSize: 18)),
+                      SizedBox(height: 2),
+                      widget.disease == "healthy"
+                          ? Container()
+                          : Text(widget.remedy,
+                              style: TextStyle(
+                                  fontSize: 14, fontStyle: FontStyle.italic)),
+                      Spacer(
+                        flex: 2,
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
             SizedBox(

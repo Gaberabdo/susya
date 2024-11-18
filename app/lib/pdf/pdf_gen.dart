@@ -77,7 +77,7 @@ Future<bool> makeReport({plant, disease, remedy}) async {
                     pw.Spacer(),
                   ]),
               pw.Spacer(flex: 2),
-              pw.Text("Username: ${user.displayName}",
+              pw.Text("Username: ${user.displayName }",
                   style: pw.TextStyle(color: PdfColors.black, fontSize: 26)),
               pw.SizedBox(height: 5),
               pw.Text("Email: ${user.email}",
@@ -105,7 +105,7 @@ Future<bool> makeReport({plant, disease, remedy}) async {
   final file = File('$pathdir/Report_$name.pdf');
   final file2 = await file.writeAsBytes(await pdf.save());
   print(file2.path);
-  Share.shareFiles([file.path]);
+  // Share.shareXFiles([file.path!]);
 
   return true;
 }
